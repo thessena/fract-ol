@@ -1,9 +1,4 @@
-# all -> baue dein objects, linke und mache eine binray MLX bauen
-# re -> fclean all
-# clean -> object files weg
-# fclean -> clean und binaries weg   MLX weg
-
-NAME = fractol
+NAME = fract-ol
 
 BLACK := \033[30m
 RED := \033[31m
@@ -15,51 +10,41 @@ CYAN := \033[36m
 X := \033[0m
 
 CC = gcc
-LIBMLX = /libs/MLX42/build
+LIBMLX = ./mlx42/build
 
 CFLAGS = -Wall -Wextra -Werror -g -Iinc
-LDFLAGS = -L$(LIBMLX) -lmlx42 -lX11 -lXext -lm
+LDFLAGS = -L$(LIBMLX) -lmlx42 -framework Cocoa -framework OpenGL -framework IOKit -lglfw
 
 SRC = src/main.c
 OBJ = $(SRC:.c=.o)
 
-OBJECTS := $(addprefix $(OBJ_DIR)/, $(SRCS:%.c=%.o))
+MLX_DIR = mlx42
+MLX_BUILD_DIR = $(MLX_DIR)/build
+MLX_LIB = $(MLX_BUILD_DIR)/libmlx42.a
 
-# MLX Variables
-MLXFT_DIR=./mlx42
-MLXFT=libmlx42.a
-MLXFT_BUILD_FLAGS=-B
-MLXFT_BUILD_DIR=./mlx42/build
-MLXFT_LIB=$(MLXFT_BUILD_DIR)/$(MLXFT)
-MLXFTFLAGS=-L$(MLXFT_BUILD_DIR) -lmlx42 -lglfw
-
-$(MLXFT_LIB):
-	@rm -rf mlx42
-	@git clone https://github.com/codam-coding-college/MLX42.git mlx42
-	@mkdir -p $(MLXFT_BUILD_DIR)
-	@cd $(MLXFT_DIR) && cmake $(MLXFT_BUILD_FLAGS) ../$(MLXFT_BUILD_DIR) && cd .. && cd $(MLXFT_BUILD_DIR) && $(MAKE)
+$(MLX_LIB):
+	@rm -rf $(MLX_DIR)
+	@git clone https://github.com/codam-coding-college/MLX42.git $(MLX_DIR)
+	@mkdir -p $(MLX_BUILD_DIR)
+	@cd $(MLX_DIR) && cmake -B $(MLX_BUILD_DIR) && cmake --build $(MLX_BUILD_DIR)
 	@echo "$(GREEN)MLX42 built successfully$(X)"
 
-all: $(MLXFT_LIB) 
-	cc ./src/main.c $(MLXFTFLAGS)
+all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(CC) $(OBJ) $(LIBS) -o $(NAME)
+$(NAME): $(MLX_LIB) $(OBJ)
+	$(CC) $(OBJ) $(LDFLAGS) -o $(NAME)
+	@echo "$(GREEN)$(NAME) built successfully$(X)"
 
 %.o: %.c
-	$(CC) $(CFLAGS) -Iinc -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@rm -rf mlx42
-	@rm -rf $(OBJ_DIR)
-	@rm -rf $(MLXFT_BUILD_DIR)
-	# @$(MAKE) -C $(LIBFT_DIR) clean
+	@rm -f $(OBJ)
 	@echo "$(RED)objects deleted$(X)"
 
 fclean: clean
-	rm -rf $(MLXFT_BUILD_DIR)
-	@rm -rf $(NAME)
-	# @$(MAKE) -C $(LIBFT_DIR) fclean
+	@rm -f $(NAME)
+	@rm -rf $(MLX_BUILD_DIR)
 	@echo "$(RED)fract-ol deleted$(X)"
 
 re: fclean all
