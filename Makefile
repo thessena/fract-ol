@@ -1,18 +1,12 @@
 NAME = fract-ol
 
-BLACK := \033[30m
 RED := \033[31m
 GREEN := \033[32m
-YELLOW := \033[33m
-BLUE := \033[34m
-MAGENTA := \033[35m
-CYAN := \033[36m
-X := \033[0m
 
 CC = gcc
 LIBMLX = ./mlx42/build
 
-CFLAGS = -Wall -Wextra -Werror -g -Iinc
+CFLAGS = -Wall -Wextra -Werror -g -Iinc -Imlx42/include
 LDFLAGS = -L$(LIBMLX) -lmlx42 -framework Cocoa -framework OpenGL -framework IOKit -lglfw
 
 SRC = src/main.c
@@ -20,7 +14,7 @@ OBJ = $(SRC:.c=.o)
 
 MLX_DIR = mlx42
 MLX_BUILD_DIR = $(MLX_DIR)/build
-MLX_LIB = $(MLX_BUILD_DIR)/libmlx42.a
+MLXFT_LIB = ./mlx42/build/libmlx42.a
 
 $(MLX_LIB):
 	@rm -rf $(MLX_DIR)
