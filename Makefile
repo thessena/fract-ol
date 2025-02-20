@@ -17,8 +17,7 @@ MLX_BUILD_DIR = $(MLX_DIR)/build
 MLXFT_LIB = ./mlx42/build/libmlx42.a
 
 $(MLX_LIB):
-	@rm -rf $(MLX_DIR)
-	@git clone https://github.com/codam-coding-college/MLX42.git $(MLX_DIR)
+	@rm -rf $(MLX_BUILD_DIR)
 	@mkdir -p $(MLX_BUILD_DIR)
 	@cd $(MLX_DIR) && cmake -B $(MLX_BUILD_DIR) && cmake --build $(MLX_BUILD_DIR)
 	@echo "$(GREEN)MLX42 built successfully$(X)"
@@ -38,7 +37,6 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
-	@rm -rf $(MLX_BUILD_DIR)
 	@echo "$(RED)fract-ol deleted$(X)"
 
 re: fclean all

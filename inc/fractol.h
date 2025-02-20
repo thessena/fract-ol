@@ -7,7 +7,12 @@ typedef struct s_data
 {
     mlx_t *mlx;
     mlx_image_t *img;
+
+	double zoom;
+    double moveX;
+    double moveY;
 } t_data;
+
 
 void	render_fractal(t_data *data);
 void	handle_events(t_data *data);
