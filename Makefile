@@ -4,25 +4,49 @@ RED := \033[31m
 GREEN := \033[32m
 
 CC = gcc
-LIBMLX = ./mlx42/build
-
-CFLAGS = -Wall -Wextra -Werror -g -Iinc -Imlx42/include
-LDFLAGS = -L$(LIBMLX) -lmlx42 -framework Cocoa -framework OpenGL -framework IOKit -lglfw
-
-SRC = src/main.c
-OBJ = $(SRC:.c=.o)
 
 MLX_DIR = mlx42
 MLX_BUILD_DIR = $(MLX_DIR)/build
-MLXFT_LIB = ./mlx42/build/libmlx42.a
+MLX_LIB = $(MLX_BUILD_DIR)/libmlx42.a
+MLX_URL = https://github.com/codam-coding-college/MLX42.git
 
-$(MLX_LIB):
-	@rm -rf $(MLX_BUILD_DIR)
-	@mkdir -p $(MLX_BUILD_DIR)
-	@cd $(MLX_DIR) && cmake -B $(MLX_BUILD_DIR) && cmake --build $(MLX_BUILD_DIR)
-	@echo "$(GREEN)MLX42 built successfully$(X)"
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+    SYS_LDFLAGS = -framework Cocoa -framework OpenGL -framework IOKit -lglfw
+else
+    SYS_LDFLAGS = -lglfw -ldl -lm -lpthread
+endif
+
+CFLAGS = -Wall -Wextra -Werror -g -Iinc -I$(MLX_DIR)/include
+LDFLAGS = -L$(MLX_DIR)/build -lmlx42 $(SYS_LDFLAGS)
+
+SRC = \
+    src/main.c \
+    src/app.c \
+    src/args.c \
+    src/render.c \
+    src/input.c \
+    src/color.c
+
+OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
+
+
+mlx_clone:
+	@if [ ! -d "$(MLX_DIR)/.git" ]; then \
+		printf "Cloning MLX42...\n"; \
+		git clone $(MLX_URL) $(MLX_DIR); \
+	else \
+		printf "MLX42 already present.\n"; \
+	fi
+
+
+$(MLX_LIB): mlx_clone
+	@rm -rf $(MLX_BUILD_DIR)
+	@mkdir -p $(MLX_BUILD_DIR)
+	@cd $(MLX_DIR) && cmake -B build && cmake --build build
+	@echo "$(GREEN)MLX42 built successfully$(X)"
 
 $(NAME): $(MLX_LIB) $(OBJ)
 	$(CC) $(OBJ) $(LDFLAGS) -o $(NAME)
