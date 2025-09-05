@@ -6,16 +6,18 @@
 #    By: thessena <thessena@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/05 11:32:14 by thessena          #+#    #+#              #
-#    Updated: 2025/09/05 14:42:54 by thessena         ###   ########.fr        #
+#    Updated: 2025/09/05 15:21:20 by thessena         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fractol
 
-RED := \033[31m
-GREEN := \033[32m
+RED 	:= \033[31m
+GREEN 	:= \033[32m
+RESET	:= \033[0m
 
-CC = gcc
+
+CC = cc
 
 MLX_DIR = mlx42
 MLX_BUILD_DIR = $(MLX_DIR)/build
@@ -50,21 +52,20 @@ OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
-
 mlx_clone:
-	@if [ ! -d "$(MLX_DIR)/.git" ]; then \
+	@if [ ! -f "$(MLX_DIR)/CMakeLists.txt" ]; then \
 		printf "Cloning MLX42...\n"; \
 		git clone $(MLX_URL) $(MLX_DIR); \
 	else \
 		printf "MLX42 already present.\n"; \
 	fi
 
-
-$(MLX_LIB): mlx_clone
-	@rm -rf $(MLX_BUILD_DIR)
-	@mkdir -p $(MLX_BUILD_DIR)
-	@cd $(MLX_DIR) && cmake -B build && cmake --build build
-	@echo "$(GREEN)MLX42 built successfully$(X)"
+$(MLX_LIB): | mlx_clone
+	@if [ ! -f "$(MLX_LIB)" ]; then \
+		mkdir -p $(MLX_BUILD_DIR); \
+		cd $(MLX_DIR) && cmake -B build >/dev/null && cmake --build build >/dev/null; \
+		echo "$(GREEN)MLX42 built successfully$(RESET)"; \
+	fi
 
 $(NAME): $(MLX_LIB) $(OBJ)
 	$(CC) $(OBJ) $(LDFLAGS) -o $(NAME)
@@ -83,4 +84,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re mlx_clone
