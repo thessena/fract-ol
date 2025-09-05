@@ -6,7 +6,7 @@
 #    By: thessena <thessena@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/05 11:32:14 by thessena          #+#    #+#              #
-#    Updated: 2025/09/05 12:50:28 by thessena         ###   ########.fr        #
+#    Updated: 2025/09/05 13:44:10 by thessena         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,9 @@ SRC = \
     src/args.c \
     src/render.c \
     src/input.c \
-    src/color.c
+	src/input_scroll.c \
+    src/color_utils.c \
+	src/palette.c
 
 OBJ = $(SRC:.c=.o)
 

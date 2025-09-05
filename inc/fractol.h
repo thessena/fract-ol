@@ -6,7 +6,7 @@
 /*   By: thessena <thessena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 11:31:45 by thessena          #+#    #+#             */
-/*   Updated: 2025/09/05 13:28:52 by thessena         ###   ########.fr       */
+/*   Updated: 2025/09/05 13:38:28 by thessena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,9 @@ void		render_fractal(t_app *app);
 // input.c
 void		setup_hooks(t_app *app);
 
-// color.c
+// color utils.c / palette.c
 uint32_t	pack_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+uint32_t	lerp_color(uint32_t c1, uint32_t c2, double t);
 uint32_t	palette_color(t_app *app, double t);
 
 #endif
