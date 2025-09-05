@@ -6,7 +6,7 @@
 /*   By: thessena <thessena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 13:00:29 by thessena          #+#    #+#             */
-/*   Updated: 2025/09/05 13:07:22 by thessena         ###   ########.fr       */
+/*   Updated: 2025/09/05 13:27:35 by thessena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,34 +21,43 @@ uint32_t	pack_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 		| (uint32_t)b);
 }
 
-static uint32_t	lerp_color(uint32_t c1, uint32_t c2, double t)
+typedef struct s_rgba
 {
-	uint8_t	a1;
-	uint8_t	r1;
-	uint8_t	g1;
-	uint8_t	b1;
-	uint8_t	a2;
-	uint8_t	r2;
-	uint8_t	g2;
-	uint8_t	b2;
-	uint8_t	a;
 	uint8_t	r;
 	uint8_t	g;
 	uint8_t	b;
+	uint8_t	a;
+}t_rgba;
 
-	a1 = (c1 >> 24) & 0xFF;
-	r1 = (c1 >> 16) & 0xFF;
-	g1 = (c1 >> 8) & 0xFF;
-	b1 = c1 & 0xFF;
-	a2 = (c2 >> 24) & 0xFF;
-	r2 = (c2 >> 16) & 0xFF;
-	g2 = (c2 >> 8) & 0xFF;
-	b2 = c2 & 0xFF;
-	a = (uint8_t)(a1 + (a2 - a1) * t);
-	r = (uint8_t)(r1 + (r2 - r1) * t);
-	g = (uint8_t)(g1 + (g2 - g1) * t);
-	b = (uint8_t)(b1 + (b2 - b1) * t);
-	return (pack_rgba(r, g, b, a));
+static t_rgba	unpack(uint32_t c)
+{
+	t_rgba	v;
+
+	v.a = (c >> 24) & 0xFF;
+	v.r = (c >> 16) & 0xFF;
+	v.g = (c >> 8) & 0xFF;
+	v.b = c & 0xFF;
+	return (v);
+}
+
+static uint8_t	lerp8(uint8_t x, uint8_t y, double t)
+{
+	return ((uint8_t)(x + (y - x) * t));
+}
+
+static uint32_t	lerp_color(uint32_t c1, uint32_t c2, double t)
+{
+	t_rgba	u;
+	t_rgba	v;
+	t_rgba	w;
+
+	u = unpack(c1);
+	v = unpack(c2);
+	w.a = lerp8(u.a, v.a, t);
+	w.r = lerp8(u.r, v.r, t);
+	w.g = lerp8(u.g, v.g, t);
+	w.b = lerp8(u.b, v.b, t);
+	return (pack_rgba(w.r, w.g, w.b, w.a));
 }
 
 static uint32_t	palette_fire(double t)

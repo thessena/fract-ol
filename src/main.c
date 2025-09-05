@@ -6,17 +6,16 @@
 /*   By: thessena <thessena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 11:31:36 by thessena          #+#    #+#             */
-/*   Updated: 2025/09/05 13:11:20 by thessena         ###   ########.fr       */
+/*   Updated: 2025/09/05 13:25:57 by thessena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fractol.h"
 #include <stdio.h>
 
-static void	on_close(void* param)
+static void	on_close(void *param)
 {
-	t_app*	app = (t_app*)param;
-	(void)app;
+	(void)param;
 }
 
 int	main(int argc, char **argv)
