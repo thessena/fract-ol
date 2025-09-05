@@ -6,11 +6,11 @@
 #    By: thessena <thessena@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/05 11:32:14 by thessena          #+#    #+#              #
-#    Updated: 2025/09/05 13:44:10 by thessena         ###   ########.fr        #
+#    Updated: 2025/09/05 14:42:54 by thessena         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = fract-ol
+NAME = fractol
 
 RED := \033[31m
 GREEN := \033[32m
@@ -33,14 +33,18 @@ CFLAGS = -Wall -Wextra -Werror -g -Iinc -I$(MLX_DIR)/include
 LDFLAGS = -L$(MLX_DIR)/build -lmlx42 $(SYS_LDFLAGS)
 
 SRC = \
-    src/main.c \
     src/app.c \
     src/args.c \
-    src/render.c \
+    src/color_utils.c \
+	src/ft_printf_conv.c \
+	src/ft_printf_num.c \
+	src/ft_printf_write.c \
+	src/ft_printf.c \
     src/input.c \
 	src/input_scroll.c \
-    src/color_utils.c \
-	src/palette.c
+    src/main.c \
+	src/palette.c \
+    src/render.c
 
 OBJ = $(SRC:.c=.o)
 

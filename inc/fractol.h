@@ -6,7 +6,7 @@
 /*   By: thessena <thessena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 11:31:45 by thessena          #+#    #+#             */
-/*   Updated: 2025/09/05 13:38:28 by thessena         ###   ########.fr       */
+/*   Updated: 2025/09/05 14:44:10 by thessena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <stdint.h>
 # include <stdbool.h>
+# include <stdarg.h>
+# include <unistd.h>
 # include "../mlx42/include/MLX42/MLX42.h"
 
 typedef struct s_cpx
@@ -73,5 +75,20 @@ void		setup_hooks(t_app *app);
 uint32_t	pack_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 uint32_t	lerp_color(uint32_t c1, uint32_t c2, double t);
 uint32_t	palette_color(t_app *app, double t);
+
+// ft_printf.c
+int			ft_printf(const char *fmt, ...);
+
+// ft_printf_conv.c
+int			ft_handle_conv(char c, va_list *ap);
+
+// ft_printf_write.c
+int			ft_put_char(char c);
+int			ft_put_str(const char *s);
+
+// ft_printf_num.c
+int			ft_put_signed(long n);
+int			ft_put_unsigned_base(unsigned long n, unsigned int base, int upper);
+int			ft_put_ptr(uintptr_t p);
 
 #endif
