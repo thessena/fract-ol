@@ -6,7 +6,7 @@
 #    By: thessena <thessena@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/05 11:32:14 by thessena          #+#    #+#              #
-#    Updated: 2025/09/05 15:21:20 by thessena         ###   ########.fr        #
+#    Updated: 2025/09/05 15:29:19 by thessena         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,6 @@ NAME = fractol
 RED 	:= \033[31m
 GREEN 	:= \033[32m
 RESET	:= \033[0m
-
 
 CC = cc
 
@@ -52,15 +51,11 @@ OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
-mlx_clone:
+$(MLX_LIB):
 	@if [ ! -f "$(MLX_DIR)/CMakeLists.txt" ]; then \
-		printf "Cloning MLX42...\n"; \
+		echo "Fetching MLX42..."; \
 		git clone $(MLX_URL) $(MLX_DIR); \
-	else \
-		printf "MLX42 already present.\n"; \
 	fi
-
-$(MLX_LIB): | mlx_clone
 	@if [ ! -f "$(MLX_LIB)" ]; then \
 		mkdir -p $(MLX_BUILD_DIR); \
 		cd $(MLX_DIR) && cmake -B build >/dev/null && cmake --build build >/dev/null; \
